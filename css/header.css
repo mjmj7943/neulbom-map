@@ -11,16 +11,17 @@ header {
 }
 
 .logo-left {
+    position: absolute;
     height: 22px;
-    margin-right: 10px;
+    left: 22px;
+    top: 50%;
 }
 
 .logo-right {
     position: absolute;
     height: 22px;
-    top: 22px;
+    top: 50%;
     right: 22px;
-    margin-right: 10px;
 }
 
 .header_text {
