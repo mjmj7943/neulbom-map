@@ -16,7 +16,9 @@ header {
 }
 
 .logo-right {
+    position: absolute;
     height: 22px;
+    top: 22px;
     right: 22px;
     margin-right: 10px;
 }
