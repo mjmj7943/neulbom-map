@@ -329,7 +329,7 @@ fetch(helpUrl)
 
 //인트로 툴팁
 window.addEventListener('DOMContentLoaded', () => {
-  // 0.5초 지연 후 툴팁 표시
+  // 2초 지연 후 툴팁 표시
   setTimeout(() => {
     const legendTooltip = document.getElementById('legend-tooltip');
     const mapTooltip = document.getElementById('map-tooltip');
@@ -342,7 +342,7 @@ window.addEventListener('DOMContentLoaded', () => {
       legendTooltip?.classList.add('show');
       mapTooltip?.classList.add('show');
     });
-  }, 500);
+  }, 2000);
   
   // 닫기 버튼 연결
   document.querySelectorAll('.tooltip-close').forEach(btn => {
