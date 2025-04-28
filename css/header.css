@@ -10,8 +10,14 @@ header {
     z-index: 1200;
 }
 
-.logo {
+.logo-left {
     height: 22px;
+    margin-right: 10px;
+}
+
+.logo-right {
+    height: 22px;
+    right: 22px;
     margin-right: 10px;
 }
 
