@@ -103,15 +103,15 @@
   outline: none;
   -webkit-tap-highlight-color: transparent;
 
-  stroke: #ABABAB;
-  stroke-width: 2;
+  stroke: #96a2fa;
+  stroke-width: 1.5;
   fill: none;
   fill-opacity: 0.15;
 }
 
 .boundary-label {
   background: none;           /* 배경 제거 */
-  color: #b5b5b5;                /* 글자색 */
+  color: #111;                /* 글자색 */
   font-weight: 700;
   font-size: 18px;
   border: none;
