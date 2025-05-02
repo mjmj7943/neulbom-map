@@ -5,7 +5,7 @@
 }
 
 .leaflet-tile {
-    filter: saturate(20%) brightness(115%); /* 지도 채도 낮춤 */
+    filter: saturate(20%) brightness(105%); /* 지도 채도 낮춤 */
     }
 
 /* 커스텀 마커 스타일 */
