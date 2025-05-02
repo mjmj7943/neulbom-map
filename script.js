@@ -14,33 +14,54 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { //오픈스�
   attribution: '&copy; OpenStreetMap contributors',
 }).addTo(map);
 
-const tooltipZoomThreshold = 12;    // 확대 12 이상일 때만 툴팁 보이기
+const tooltipZoomThreshold = 9;    // 확대 12 이상일 때만 툴팁 보이기
 const tooltipLayers = [];          // 툴팁 객체 저장용
 
 // 행정경계 GeoJSON 불러오기
 fetch('data/hwao.geojson')
   .then(response => response.json())
   .then(geojsonData => {
+    const tooltipZoomThreshold = 12;
+    const tooltipLayers = [];
+
+    // 절대 좌표로 고정할 행정동들: [lat, lng]
+    const fixedTooltipPositions = {
+      "서신면": [37.167095, 126.696779],
+      "새솔동": [37.286120, 126.818398],
+      "향남읍": [37.118272, 126.931240],
+      "양감면": [37.091685, 126.963835],
+      "봉담읍": [37.205030, 126.930070],
+      "남촌동": [37.161945, 127.047722],
+      "팔탄면": [37.162744, 126.881838]
+      // 필요한 만큼 추가
+    };
+
     const boundaryLayer = L.geoJSON(geojsonData, {
       pane: 'overlayPane',
-      style: function () {
-        return {
-          className: 'boundary-layer'
-        };
-      },
+      style: () => ({ className: 'boundary-layer' }),
       onEachFeature: function (feature, layer) {
         const label = feature.properties.adm_nm;
+
+        // 1) 고정 좌표가 있으면 그걸 사용
+        let latlng;
+        if (fixedTooltipPositions[label]) {
+          latlng = fixedTooltipPositions[label];
+        } else {
+          // 2) 없으면 Turf로 중심 자동 계산
+          const coords = turf.pointOnFeature(feature).geometry.coordinates; // [lng, lat]
+          latlng = [coords[1], coords[0]]; // Leaflet 좌표로 변환
+        }
 
         const tooltip = L.tooltip({
           permanent: true,
           direction: 'center',
           className: 'boundary-label'
         })
-        .setContent(label)
-        .setLatLng(layer.getBounds().getCenter());
+          .setContent(label)
+          .setLatLng(latlng);
 
-        // tooltip.addTo(map);              // 지도에 직접 추가(주석처리로 꺼놓음)
-        tooltipLayers.push(tooltip);     // 배열에 저장
+        tooltip.addTo(map);
+        tooltipLayers.push(tooltip);
       }
     }).addTo(map);
 
