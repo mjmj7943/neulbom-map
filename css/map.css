@@ -5,7 +5,7 @@
 }
 
 .leaflet-tile {
-    filter: saturate(40%) brightness(105%); /* 지도 채도 낮춤 */
+    filter: saturate(20%) brightness(115%); /* 지도 채도 낮춤 */
     }
 
 /* 커스텀 마커 스타일 */
@@ -94,4 +94,31 @@
   text-align: right;
   position: absolute;
   right: -10px;
+}
+
+/*행정동 경계*/
+.boundary-layer {
+  pointer-events: none;
+  user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  stroke: #ABABAB;
+  stroke-width: 2;
+  fill: none;
+  fill-opacity: 0.15;
+}
+
+.boundary-label {
+  background: none;           /* 배경 제거 */
+  color: #b5b5b5;                /* 글자색 */
+  font-weight: 700;
+  font-size: 18px;
+  border: none;
+  box-shadow: none;
+  padding: 2px 4px;
+  text-align: center;
+  pointer-events: none;       /* 클릭 차단 */
+  user-select: none;
+  opacity: 1;
 }

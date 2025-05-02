@@ -14,6 +14,51 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { //오픈스�
   attribution: '&copy; OpenStreetMap contributors',
 }).addTo(map);
 
+const tooltipZoomThreshold = 12;    // 확대 12 이상일 때만 툴팁 보이기
+const tooltipLayers = [];          // 툴팁 객체 저장용
+
+// 행정경계 GeoJSON 불러오기
+fetch('data/hwao.geojson')
+  .then(response => response.json())
+  .then(geojsonData => {
+    const boundaryLayer = L.geoJSON(geojsonData, {
+      pane: 'overlayPane',
+      style: function () {
+        return {
+          className: 'boundary-layer'
+        };
+      },
+      onEachFeature: function (feature, layer) {
+        const label = feature.properties.adm_nm;
+
+        const tooltip = L.tooltip({
+          permanent: true,
+          direction: 'center',
+          className: 'boundary-label'
+        })
+        .setContent(label)
+        .setLatLng(layer.getBounds().getCenter());
+
+        // tooltip.addTo(map);              // 지도에 직접 추가(주석처리로 꺼놓음)
+        tooltipLayers.push(tooltip);     // 배열에 저장
+      }
+    }).addTo(map);
+
+    // 확대 수준에 따라 툴팁 show/hide
+    function updateTooltipVisibility() {
+      const zoom = map.getZoom();
+      tooltipLayers.forEach(tooltip => {
+        const el = tooltip.getElement();
+        if (el) {
+          el.style.display = (zoom >= tooltipZoomThreshold) ? 'block' : 'none';
+        }
+      });
+    }
+
+    map.on('zoomend', updateTooltipVisibility);
+    updateTooltipVisibility(); // 초기화 시 1회 호출
+  });
+
 function setContainerHeight() { // 화면높이 컨테이너에 맞춰 설정
   const container = document.querySelector('.container');
   if (container) {
@@ -327,37 +372,58 @@ fetch(helpUrl)
   })
   .catch(err => console.error('Help Sheet fetch error:', err));
 
-//인트로 툴팁
-window.addEventListener('DOMContentLoaded', () => {
-  // 2초 지연 후 툴팁 표시
-  setTimeout(() => {
-    const legendTooltip = document.getElementById('legend-tooltip');
-    const mapTooltip = document.getElementById('map-tooltip');
+  window.addEventListener('DOMContentLoaded', () => {
+    const HOUR = 1000 * 60 * 60;
+    const TOOLTIP_IDS = ['legend-tooltip', 'map-tooltip'];
+    const CLOSED_FLAGS_KEY = 'intro-tooltip-closed-flags';
+    const LAST_CLOSED_KEY = 'intro-tooltip-last-closed';
   
-    legendTooltip?.classList.remove('hidden');
-    mapTooltip?.classList.remove('hidden');
+    const now = Date.now();
   
-    // 다음 프레임에 .show 추가 (transition이 먹으려면 렌더링 이후 추가해야 함)
-    requestAnimationFrame(() => {
-      legendTooltip?.classList.add('show');
-      mapTooltip?.classList.add('show');
-    });
-  }, 2000);
+    // 조건: 마지막에 두 개 모두 닫힌 시점이 1시간 이내면 → 표시 안 함
+    const lastClosed = parseInt(localStorage.getItem(LAST_CLOSED_KEY), 10);
+    const withinCooldown = lastClosed && now - lastClosed < HOUR;
   
-  // 닫기 버튼 연결
-  document.querySelectorAll('.tooltip-close').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const targetId = e.target.getAttribute('data-target');
-      const el = document.getElementById(targetId);
-      if (!el) return;
-
-      el.classList.remove('show'); // fade-out 시작
-
-      const handleTransitionEnd = () => {
-        el.classList.add('hidden'); // fade-out 후 완전히 숨김
-        el.removeEventListener('transitionend', handleTransitionEnd);
-      };
-      el.addEventListener('transitionend', handleTransitionEnd);
+    // 2초 지연 후 툴팁 표시
+    if (!withinCooldown) {
+      setTimeout(() => {
+        TOOLTIP_IDS.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+  
+          el.classList.remove('hidden');
+          requestAnimationFrame(() => el.classList.add('show'));
+        });
+      }, 2000);
+    }
+  
+    // 닫기 버튼 동작 정의
+    document.querySelectorAll('.tooltip-close').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetId = e.target.getAttribute('data-target');
+        const el = document.getElementById(targetId);
+        if (!el) return;
+  
+        el.classList.remove('show');
+  
+        // 닫은 후 숨기기 처리
+        el.addEventListener('transitionend', function handleTransitionEnd() {
+          el.classList.add('hidden');
+          el.removeEventListener('transitionend', handleTransitionEnd);
+        });
+  
+        // 닫은 상태 저장
+        let flags = JSON.parse(localStorage.getItem(CLOSED_FLAGS_KEY) || '{}');
+        flags[targetId] = true;
+        localStorage.setItem(CLOSED_FLAGS_KEY, JSON.stringify(flags));
+  
+        // 두 개 모두 닫은 경우에만 '마지막 닫은 시점' 기록
+        const allClosed = TOOLTIP_IDS.every(id => flags[id]);
+        if (allClosed) {
+          localStorage.setItem(LAST_CLOSED_KEY, now.toString());
+          localStorage.removeItem(CLOSED_FLAGS_KEY); // 플래그 초기화
+        }
+      });
     });
   });
-});
+  
