@@ -111,9 +111,9 @@
 
 .boundary-label {
   background: none;           /* 배경 제거 */
-  color: #4959cc;                /* 글자색 */
-  font-weight: 700;
-  font-size: 18px;
+  color: #808ded;                /* 글자색 */
+  font-weight: 600;
+  font-size: 14px;
   border: none;
   box-shadow: none;
   padding: 2px 4px;
