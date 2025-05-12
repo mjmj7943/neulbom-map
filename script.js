@@ -14,8 +14,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { //오픈스�
   attribution: '&copy; OpenStreetMap contributors',
 }).addTo(map);
 
-const tooltipZoomThreshold = 9;    // 확대 12 이상일 때만 툴팁 보이기
-const tooltipLayers = [];          // 툴팁 객체 저장용
+const tooltipZoomThreshold = 9;    // 확대 12 이상일 때만 행정동명 보이기
+const tooltipLayers = [];          // 행정동명 객체 저장용
 
 // 행정경계 GeoJSON 불러오기
 fetch('data/hwao.geojson')
@@ -65,19 +65,24 @@ fetch('data/hwao.geojson')
       }
     }).addTo(map);
 
-    // 확대 수준에 따라 툴팁 show/hide
-    function updateTooltipVisibility() {
-      const zoom = map.getZoom();
-      tooltipLayers.forEach(tooltip => {
-        const el = tooltip.getElement();
-        if (el) {
-          el.style.display = (zoom >= tooltipZoomThreshold) ? 'block' : 'none';
-        }
-      });
-    }
-
     map.on('zoomend', updateTooltipVisibility);
     updateTooltipVisibility(); // 초기화 시 1회 호출
+  });
+
+  const toggleBoundary = document.getElementById('toggle-boundary');
+
+  toggleBoundary.addEventListener('change', (event) => {
+    if (event.target.checked) {
+      // 행정동 경계와 행정동명 표시
+      document.querySelectorAll('.boundary-layer, .boundary-label').forEach(el => {
+        el.style.display = 'block';
+      });
+    } else {
+      // 행정동 경계와 행정동명 숨김
+      document.querySelectorAll('.boundary-layer, .boundary-label').forEach(el => {
+        el.style.display = 'none';
+      });
+    }
   });
 
 function setContainerHeight() { // 화면높이 컨테이너에 맞춰 설정
@@ -312,15 +317,34 @@ fetch(pointsUrl)
   })
   .catch(err => console.error('포인트 데이터 불러오기 실패:', err));
 
-// 지도 상에서 이동/줌 시 범례 숨김 처리
+// 지도 상에서 이동/줌 시 범례와 툴팁 숨김 처리
 let hideTimer;
+
 map.on('movestart zoomstart dragstart', () => {
+  // 범례 숨김 처리
   document.querySelector('.legend-bar')?.classList.add('slide-out');
+  
+  // 모든 balloon-tooltip 숨김 처리
+  const tooltips = document.querySelectorAll('.balloon-tooltip');
+  tooltips.forEach(tooltip => {
+    tooltip.classList.remove('show');
+    tooltip.classList.add('hidden');
+  });
+
   clearTimeout(hideTimer);
 });
+
 map.on('moveend zoomend dragend', () => {
   hideTimer = setTimeout(() => {
+    // 범례 다시 표시
     document.querySelector('.legend-bar')?.classList.remove('slide-out');
+    
+    // 모든 balloon-tooltip 다시 표시
+    const tooltips = document.querySelectorAll('.balloon-tooltip');
+    tooltips.forEach(tooltip => {
+      tooltip.classList.remove('hidden');
+      tooltip.classList.add('show');
+    });
   }, 1500);
 });
 

@@ -38,29 +38,32 @@
   }
   
   .hidden {
-    display: none;
+    opacity: 0;
   }
 
 
 /* 말풍선 툴팁 스타일 */
 .balloon-tooltip {
-    position: absolute;
-    background: rgba(51, 51, 51, 0.8);
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-size: 12px;
-    max-width: 220px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    z-index: 2000;
-    opacity: 0; /* 시작은 투명 */
-    transition: opacity 0.4s ease, transform 0.4s ease; /* 부드럽게 변화 */
-  }
+  position: absolute;
+  background: rgba(51, 51, 51, 0.8);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 12px;
+  max-width: 220px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  opacity: 0; /* 초기 상태: 투명 */
+  transition: opacity 0.2s ease; /* 부드러운 전환 */
+}
 
-  .balloon-tooltip.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.balloon-tooltip.show {
+  opacity: 1; /* 보이기 */
+}
+
+.balloon-tooltip.hidden {
+  opacity: 0; /* 숨기기 */
+}
 
 .tooltip-inner {
   position: relative;

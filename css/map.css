@@ -1,5 +1,4 @@
 #map {
-    flex: 1;
     height: 100%;
     min-height: 300px; 
 }
@@ -96,24 +95,24 @@
   right: -10px;
 }
 
-/*행정동 경계*/
+/*행정동 경계 및 행정동명*/
 .boundary-layer {
   pointer-events: none;
   user-select: none;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 
-  stroke: #c4cbff;
-  stroke-width: 1.5;
+  stroke: #000000;
+  stroke-width: 1;
   fill: none;
-  fill-opacity: 0.15;
+  display: none;
 }
 
 .boundary-label {
-  background: none;           /* 배경 제거 */
-  color: #808ded;                /* 글자색 */
+  background: rgba(255, 255, 255, 1);           /* 배경 제거 */
+  color: #000000;                /* 글자색 */
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   border: none;
   box-shadow: none;
   padding: 2px 4px;
@@ -121,4 +120,6 @@
   pointer-events: none;       /* 클릭 차단 */
   user-select: none;
   opacity: 1;
+  display: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px;
 }
