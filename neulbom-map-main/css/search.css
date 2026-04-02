@@ -1,0 +1,100 @@
+/* =============================================
+   search.css — 시설 이름 검색창 및 결과 목록
+   ============================================= */
+
+.search-bar {
+  position: absolute;
+  top: 58px;     /* 헤더(50px) + 여백 8px */
+  left: 10px;
+  right: 80px;   /* 도움말 버튼(35px) + 여백 확보 */
+  z-index: var(--z-controls);
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 0 14px;
+  height: 36px;
+  gap: 6px;
+}
+
+.search-icon {
+  color: #aaa;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+#search-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: transparent;
+  color: #333;
+}
+
+#search-input::placeholder {
+  color: #bbb;
+}
+
+/* 검색 결과 드롭다운 */
+#search-results {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin-top: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: var(--z-search-dropdown);
+}
+
+#search-results.hidden {
+  display: none;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:active {
+  background-color: #f5f5f5;
+}
+
+.search-result-type {
+  font-size: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.search-result-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #222;
+}
+
+/* 검색어 하이라이트 */
+.search-highlight {
+  background: #fff3b0;
+  color: inherit;
+  font-weight: 700;
+}
+
+.search-no-result {
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #aaa;
+  text-align: center;
+}
