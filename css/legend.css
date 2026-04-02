@@ -34,9 +34,18 @@
     width: 100%;
     transition: transform 0.5s ease-in-out;
     transform: translateY(0);
-    z-index: 1200;
+    z-index: var(--z-legend);
   }
 
 .legend-bar.slide-out {
     transform: translateY(100%); /* 아래로 밀어 숨김 */
   }
+
+/* 선택된 필터 항목 강조 */
+.legend-item--active {
+  font-weight: 700;
+  background-color: #f0f4ff;
+  border-radius: 6px;
+  padding: 2px 4px;
+  margin: -2px -4px;
+}

@@ -29,6 +29,7 @@
 .leaflet-popup-content {
     line-height: 1.4;
     margin: 15px;
+    min-width: 170px;
 }
 
 .leaflet-popup-content-wrapper {
@@ -93,6 +94,7 @@
   text-align: right;
   position: absolute;
   right: -10px;
+  transform: translateY(-20px);
 }
 
 /*행정동 경계 및 행정동명*/

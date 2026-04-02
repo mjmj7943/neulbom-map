@@ -6,7 +6,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2200;
+    z-index: var(--z-type-modal);
   }
   
   .type-info.hidden {

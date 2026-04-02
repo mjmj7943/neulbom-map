@@ -20,15 +20,14 @@ html, body {
     background-color: #fcfcfc;
     box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
     position: relative;
-    z-index: 1200;
   }
 
 /* 도움말 버튼 */
 .help-button{
   position: absolute;
   font-weight: 700;
-  z-index: 2000;
-  top: 55px;
+  z-index: var(--z-controls);
+  top: 50px;
   right: 5px;
   margin: 10px;
   width: 35px;
@@ -53,7 +52,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3000;
+  z-index: var(--z-help-modal);
 }
 
 .modal.hidden {
