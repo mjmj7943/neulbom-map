@@ -16,9 +16,6 @@ const LABEL_ZOOM_THRESHOLD = 12;
 // 지도 이동 후 레전드바 복귀 딜레이 (ms)
 const LEGEND_RETURN_DELAY = 1500;
 
-// 인트로 툴팁 쿨다운 (1시간)
-const TOOLTIP_COOLDOWN = 1000 * 60 * 60;
-
 // Google Sheets 공통 ID
 const SHEET_ID = '1ZTUWQ7A1WOKYwz4jz5Q09JaxKwdP-cZ_tK8EnupkMMI';
 const GID_POINTS = '0';            // 시설 포인트 시트

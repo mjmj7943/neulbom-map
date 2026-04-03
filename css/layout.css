@@ -4,6 +4,8 @@ html, body {
     height: 100%;
     background-color: #f3f3f3;
     font-family: 'Noto Sans KR', sans-serif;
+    /* 지도 바깥 영역 핀치 줌 방지 (Leaflet 지도 내부는 touch-action: none으로 자체 처리) */
+    touch-action: pan-x pan-y;
   }
 
 * {

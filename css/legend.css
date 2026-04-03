@@ -14,6 +14,7 @@
     align-items: center;
     margin-bottom: 6px;
     cursor: pointer;
+    letter-spacing: -0.03em;
 } 
 
 .legend-icon {
